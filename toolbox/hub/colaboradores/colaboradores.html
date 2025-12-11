@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Navegación Minecraft</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/footer/footer.css">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Fondo con patrón sutil para mostrar la transparencia */
+        body {
+            min-height: 100vh;
+            background: 
+                linear-gradient(45deg, rgba(240,240,240,0.8) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(240,240,240,0.8) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(240,240,240,0.8) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(240,240,240,0.8) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1;
+}
+        /* ESPACIO FIJO para la barra de navegación */
+        .mc-navbar-spacer {
+            height: 70px; /* Altura fija para compensar la navbar */
+        }
+        
+        /* Contenedor principal para centrar el contenido VERTICALMENTE */
+        .contenedor-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra verticalmente */
+            align-items: center; /* Centra horizontalmente */
+            width: 100%;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Contenedor del texto "EN DESARROLLO" */
+        .contenedor-texto {
+            background-color: transparent;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+        
+        /* El texto "EN DESARROLLO" - AHORA MÁS PEQUEÑO */
+        .texto-desarrollo {
+            font-size: clamp(28px, 6vw, 80px);
+            font-weight: 900;
+            color: #d4cbcb;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            line-height: 1.3;
+            text-shadow: 
+                2px 2px 0px rgba(148, 148, 148, 0.1),
+                4px 4px 0px rgba(153, 152, 152, 0.05);
+            
+            /* Efecto sutil de brillo */
+            background: linear-gradient(135deg, #222 0%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            
+            /* Animación sutil */
+            animation: latido 3s infinite ease-in-out;
+            
+            /* Asegurar que todo el texto sea visible */
+            display: inline-block;
+            padding: 8px 4px;
+            word-wrap: break-word;
+            overflow: visible;
+            white-space: normal;
+            width: auto;
+            max-width: 100%;
+        }
+        
+        /* Animación de latido sutil */
+        @keyframes latido {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.02);
+                opacity: 0.95;
+            }
+        }
+        
+        /* Indicador de carga (más pequeño también) */
+        .indicador {
+            width: 120px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 25px auto 0;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            max-width: 70%;
+        }
+        
+        .indicador::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 239, 239, 0.2);
+            animation: carga 2s infinite ease-in-out;
+        }
+        
+        @keyframes carga {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .mc-navbar-spacer {
+                height: 60px;
+            }
+            
+            .contenedor-principal {
+                padding: 15px;
+            }
+            
+            .texto-desarrollo {
+                letter-spacing: 3px;
+                font-size: clamp(24px, 7vw, 60px);
+                padding: 6px 2px;
+            }
+        }
+        
+        /* Para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .mc-navbar-spacer {
+                height: 50px;
+            }
+            
+            .contenedor-principal {
+                padding: 10px;
+            }
+            
+            .texto-desarrollo {
+                letter-spacing: 2px;
+                font-size: clamp(20px, 8vw, 45px);
+                padding: 4px 1px;
+                line-height: 1.4;
+            }
+            
+            .indicador {
+                margin: 20px auto 0;
+            }
+        }
+        
+        /* Para pantallas grandes */
+        @media (min-width: 1200px) {
+            .texto-desarrollo {
+                letter-spacing: 6px;
+                font-size: clamp(50px, 5vw, 85px);
+            }
+        }
+        
+        /* Para pantallas extra grandes */
+        @media (min-width: 1600px) {
+            .texto-desarrollo {
+                font-size: clamp(55px, 4vw, 90px);
+                letter-spacing: 7px;
+            }
+        }
+        
+        /* Clase para asegurar que nada se corte */
+        .no-cortado {
+            overflow: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación (TU CÓDIGO EXACTO) -->
+    <nav class="mc-navbar">
+        <!-- Botón menú móvil -->
+        <button class="mc-mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Logo -->
+        <img src="../../../assets/img/logo/logo.png" alt="Logo" class="mc-logo">
+
+        <!-- Menú para escritorio -->
+        <ul class="mc-nav-menu">
+            <li><a href="../../../index.html">Index</a></li>
+            <li><a href="../../../toolbox/hub/proyectos/proyectos.html">Proyectos</a></li>
+            <li><a href="../../../toolbox/hub/colaboradores/colaboradores.html">Colaboradores</a></li>
+            <li><a href="../../../toolbox/hub/contacto/contacto.html">Contacto</a></li>
+        </ul>
+
+        <!-- Sección de redes sociales e idioma -->
+        <div class="mc-nav-right">
+            <div class="mc-social-icons">
+                <a href="https://www.instagram.com/iamkarl02/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@iamkarl02"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@iamkarl02"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-language-selector">
+                <div class="mc-language-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="mc-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mc-navbar-spacer"></div>
+    
+    <!-- Menú móvil -->
+    <div class="mc-mobile-menu">
+        <ul class="mc-mobile-nav-menu">
+            <li><a href="../../../index.html">Index</a></li>
+            <li><a href="../../../toolbox/hub/proyectos/proyectos.html">Proyectos</a></li>
+            <li><a href="../../../toolbox/hub/colaboradores/colaboradores.html">Colaboradores</a></li>
+            <li><a href="../../../toolbox/hub/contacto/contacto.html">Contacto</a></li>
+        </ul>
+        
+        <!-- Redes e idioma HORIZONTAL a la IZQUIERDA debajo de Contacto -->
+        <div class="mc-mobile-icons-container">
+            <div class="mc-mobile-social-icons">
+                <a href="https://www.instagram.com/iamkarl02/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@iamkarl02"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@iamkarl02"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-mobile-language-bottom">
+                <i class="fas fa-globe-americas"></i>
+                <div class="mc-mobile-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL PARA CENTRAR EL TEXTO -->
+    <div class="contenedor-principal">
+        <div class="contenedor-texto no-cortado">
+            <div class="texto-desarrollo no-cortado">EN DESARROLLO</div>
+            <!-- Elemento sutil que indica carga/proceso -->
+            <div class="indicador"></div>
+        </div>
+    </div>
+
+    <script src="../../../assets/footer/footer.js"></script>
+    <script src="../../../assets/background/fondo.js"></script>
+    <script>
+        // Código para asegurar que todo el texto sea visible
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optimizar para touch en móviles
+            if ('ontouchstart' in window) {
+                document.body.style.cursor = 'default';
+            }
+            
+            // Prevenir zoom en doble toque (móviles)
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Asegurar que el texto esté completamente visible
+            const texto = document.querySelector('.texto-desarrollo');
+            if (texto) {
+                texto.style.overflow = 'visible';
+                texto.style.whiteSpace = 'normal';
+            }
+            
+            // CENTRAR PERFECTAMENTE EL TEXTO
+            function centrarTexto() {
+                const contenedorPrincipal = document.querySelector('.contenedor-principal');
+                const navbarSpacer = document.querySelector('.mc-navbar-spacer');
+                
+                if (contenedorPrincipal && navbarSpacer) {
+                    // Calcular altura disponible
+                    const windowHeight = window.innerHeight;
+                    const navbarHeight = navbarSpacer.offsetHeight;
+                    const availableHeight = windowHeight - navbarHeight;
+                    
+                    // Ajustar el contenedor principal para centrar perfectamente
+                    contenedorPrincipal.style.minHeight = availableHeight + 'px';
+                    
+                    // También ajustar el contenedor de texto si es necesario
+                    const textoElement = document.querySelector('.texto-desarrollo');
+                    const contenedorTexto = document.querySelector('.contenedor-texto');
+                    
+                    if (textoElement && contenedorTexto) {
+                        // Asegurar que el texto no sea más ancho que el contenedor
+                        if (textoElement.offsetWidth > contenedorTexto.offsetWidth * 0.95) {
+                            const estilo = window.getComputedStyle(textoElement);
+                            let fontSize = parseFloat(estilo.fontSize);
+                            fontSize = fontSize * 0.9;
+                            textoElement.style.fontSize = fontSize + 'px';
+                        }
+                    }
+                }
+            }
+            
+            // Ejecutar al cargar y al redimensionar
+            centrarTexto();
+            window.addEventListener('resize', centrarTexto);
+            
+            // Verificar después de un breve momento
+            setTimeout(centrarTexto, 100);
+        });
+    </script>
+</body>
+</html>

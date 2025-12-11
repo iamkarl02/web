@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargas Multiplataforma</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/footer/footer.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* EFECTO PARA OSCURECER EL FONDO */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #4cc9f0, #4361ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        /* BARRA DE BÚSQUEDA Y FILTROS COMPACTOS */
+        .search-filter-section {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-container {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .search-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4cc9f0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #4cc9f0;
+            box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.2);
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .quick-btn {
+            background: rgba(67, 97, 238, 0.3);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(76, 201, 240, 0.1);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .quick-btn:hover {
+            background: rgba(67, 97, 238, 0.5);
+            transform: translateY(-2px);
+            border-color: rgba(76, 201, 240, 0.3);
+        }
+        
+        .quick-btn.active {
+            background: linear-gradient(45deg, rgba(67, 97, 238, 0.7), rgba(58, 12, 163, 0.7));
+            border-color: #4cc9f0;
+        }
+        
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .program-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(76, 201, 240, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(76, 201, 240, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .program-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-right: 30px;
+        }
+        
+        .program-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #4cc9f0;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .program-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .program-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            min-height: 60px;
+        }
+        
+        .platform-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+        
+        .platform-link {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .windows {
+            color: #00a4ef;
+        }
+        
+        .mac {
+            color: #aaaaaa;
+        }
+        
+        .linux {
+            color: #f1502f;
+        }
+        
+        .download-btn-container {
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .download-btn {
+            background: linear-gradient(45deg, rgba(67, 97, 238, 0.8), rgba(58, 12, 163, 0.8));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(45deg, rgba(58, 12, 163, 0.8), rgba(67, 97, 238, 0.8));
+            transform: scale(1.05);
+            border-color: rgba(76, 201, 240, 0.4);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .download-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(0, 0, 0, 0.7);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            backdrop-filter: blur(15px);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #4cc9f0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ffffff;
+        }
+        
+        .modal-options {
+            margin-bottom: 25px;
+        }
+        
+        .modal-option {
+            margin-bottom: 15px;
+        }
+        
+        .modal-option label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .modal-download-btn {
+            background: linear-gradient(45deg, rgba(247, 37, 133, 0.8), rgba(181, 23, 158, 0.8));
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            border: 1px solid rgba(247, 37, 133, 0.3);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-download-btn:hover {
+            background: linear-gradient(45deg, rgba(181, 23, 158, 0.8), rgba(247, 37, 133, 0.8));
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .install-code-container {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #4cc9f0;
+        }
+        
+        .install-code-title {
+            color: #4cc9f0;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .install-code {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #4cc9f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+        }
+        
+        .copy-code-btn {
+            background-color: rgba(67, 97, 238, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .copy-code-btn:hover {
+            background-color: rgba(58, 12, 163, 0.7);
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(76, 201, 240, 0.3);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #4cc9f0;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        
+        option {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+        }
+        
+        .selected-program-container {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 5px;
+            border: 1px solid rgba(76, 201, 240, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .quick-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="mc-navbar">
+        <!-- Botón menú móvil -->
+        <button class="mc-mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Logo -->
+        <img src="../../../assets/img/logo/logo.png" alt="Logo" class="mc-logo">
+
+        <!-- Menú para escritorio -->
+        <ul class="mc-nav-menu">
+            <li><a href="../../../index.html">Index</a></li>
+            <li><a href="../../../toolbox/hub/proyectos/proyectos.html">Proyectos</a></li>
+            <li><a href="../../../toolbox/hub/colaboradores/colaboradores.html">Colaboradores</a></li>
+            <li><a href="../../../toolbox/hub/contacto/contacto.html">Contacto</a></li>
+        </ul>
+
+        <!-- Sección de redes sociales e idioma -->
+        <div class="mc-nav-right">
+            <div class="mc-social-icons">
+                <a href="https://www.instagram.com/iamkarl02/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@iamkarl02"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@iamkarl02"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-language-selector">
+                <div class="mc-language-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="mc-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mc-navbar-spacer"></div>
+    
+    <!-- Menú móvil -->
+    <div class="mc-mobile-menu">
+        <ul class="mc-mobile-nav-menu">
+            <li><a href="../../../index.html">Index</a></li>
+            <li><a href="../../../toolbox/hub/proyectos/proyectos.html">Proyectos</a></li>
+            <li><a href="../../../toolbox/hub/colaboradores/colaboradores.html">Colaboradores</a></li>
+            <li><a href="../../../toolbox/hub/contacto/contacto.html">Contacto</a></li>
+        </ul>
+        
+        <!-- Redes e idioma HORIZONTAL a la IZQUIERDA debajo de Contacto -->
+        <div class="mc-mobile-icons-container">
+            <div class="mc-mobile-social-icons">
+                <a href="https://www.instagram.com/iamkarl02/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@iamkarl02"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@iamkarl02"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-mobile-language-bottom">
+                <i class="fas fa-globe-americas"></i>
+                <div class="mc-mobile-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/footer/footer.js"></script>
+    <script src="../../../assets/background/fondo.js"></script>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-download"></i> Descargas Multiplataforma</h1>
+            <p class="subtitle">Selecciona el programa que quieres descargar y elige tu sistema operativo.</p>
+        </header>
+        
+        <!-- SECCIÓN COMPACTA DE BÚSQUEDA Y FILTROS -->
+        <section class="search-filter-section">
+            <div class="search-container">
+                <label for="search-box"><i class="fas fa-search"></i> Buscar programas:</label>
+                <input type="text" id="search-box" class="search-box" placeholder="Escribe el nombre del programa...">
+            </div>
+            
+            <div class="quick-buttons" id="quick-buttons">
+                <!-- Los botones se generarán con JavaScript -->
+            </div>
+        </section>
+        
+        <section class="programs-grid" id="programs-container">
+            <!-- Programas se generarán con JavaScript -->
+        </section>
+        
+        <!-- MODAL PARA DESCARGAR INDIVIDUAL -->
+        <div class="download-modal" id="downloadModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title"><i class="fas fa-download"></i> Descargar Programa</h2>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                
+                <div class="modal-options">
+                    <div class="modal-option">
+                        <label for="program-select"><i class="fas fa-box"></i> Programa seleccionado:</label>
+                        <div class="selected-program-container">
+                            <strong id="selected-program-name"></strong>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-option">
+                        <label for="os-select"><i class="fas fa-laptop"></i> Selecciona tu sistema operativo:</label>
+                        <select id="os-select">
+                            <option value="windows">Windows (64-bit)</option>
+                            <option value="mac">macOS</option>
+                            <option value="linux-deb">Linux Debian/Ubuntu</option>
+                        </select>
+                    </div>
+                    
+                    <div id="installCodeContainer" class="install-code-container" style="display: none;">
+                        <div class="install-code-title">
+                            <i class="fas fa-terminal"></i> Código de instalación para Linux:
+                        </div>
+                        <div id="installCode" class="install-code">
+                            <!-- Código de instalación se mostrará aquí -->
+                        </div>
+                        <button id="copyCodeBtn" class="copy-code-btn">
+                            <i class="fas fa-copy"></i> Copiar Código
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="modal-download-btn" id="startDownload">
+                    <i class="fas fa-download"></i> Descargar Ahora
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p><i class="fas fa-code"></i> Desarrollado para la comunidad de software</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datos de los programas con enlaces actualizados
+        const programs = [
+            {
+                id: 1,
+                name: "Minecraft",
+                category: "juegos",
+                description: "Juego de sandbox que permite construir con bloques en un mundo generado proceduralmente.",
+                icon: "fas fa-cube",
+                downloads: {
+                    windows: "https://aka.ms/minecraftClientGameCoreWindows",
+                    mac: "https://aka.ms/minecraftClientMac",
+                    linux: "https://launcher.mojang.com/download/Minecraft.deb",
+                    linuxCode: "wget https://launcher.mojang.com/download/Minecraft.deb\nsudo dpkg -i Minecraft.deb"
+                }
+            },
+            {
+                id: 2,
+                name: "Discord",
+                category: "comunicacion",
+                description: "Plataforma de comunicación con mensajes de texto, voz y video entre comunidades.",
+                icon: "fab fa-discord",
+                downloads: {
+                    windows: "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64",
+                    mac: "https://discord.com/api/download?platform=osx",
+                    linux: "https://discord.com/api/download?platform=linux&format=deb",
+                    linuxCode: "wget -O discord.deb 'https://discord.com/api/download?platform=linux&format=deb'\nsudo dpkg -i discord.deb"
+                }
+            },
+            {
+                id: 3,
+                name: "Spotify",
+                category: "musica",
+                description: "Servicio de streaming de música, podcasts y videos con millones de canciones.",
+                icon: "fab fa-spotify",
+                downloads: {
+                    windows: "https://download.scdn.co/SpotifySetup.exe",
+                    mac: "https://download.scdn.co/SpotifyInstaller.zip",
+                    linux: "https://www.spotify.com/de-en/download/linux/",
+                    linuxCode: "# Descarga desde la página oficial:\n# https://www.spotify.com/de-en/download/linux/"
+                }
+            },
+            {
+                id: 4,
+                name: "WhatsApp",
+                category: "comunicacion",
+                description: "Aplicación de mensajería instantánea con cifrado de extremo a extremo.",
+                icon: "fab fa-whatsapp",
+                downloads: {
+                    windows: "https://get.microsoft.com/installer/download/9NKSQGP7F2NH?cid=website_cta_psi",
+                    mac: "https://web.whatsapp.com/",
+                    linux: "https://web.whatsapp.com/",
+                    linuxCode: "# WhatsApp Web está disponible en el navegador:\n# https://web.whatsapp.com/"
+                }
+            },
+            {
+                id: 5,
+                name: "Chrome",
+                category: "navegadores",
+                description: "Navegador web de Google, conocido por su velocidad y amplia gama de extensiones.",
+                icon: "fab fa-chrome",
+                downloads: {
+                    windows: "https://www.google.com/chrome",
+                    mac: "https://www.google.com/chrome",
+                    linux: "https://www.google.com/chrome",
+                    linuxCode: "wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -\nsudo sh -c 'echo \"deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main\" >> /etc/apt/sources.list.d/google-chrome.list'\nsudo apt update\nsudo apt install google-chrome-stable"
+                }
+            },
+            {
+                id: 6,
+                name: "Brave",
+                category: "navegadores",
+                description: "Navegador web de código abierto que bloquea anuncios y rastreadores por defecto.",
+                icon: "fas fa-shield-alt",
+                downloads: {
+                    windows: "https://laptop-updates.brave.com/download/BRV010?bitness=64",
+                    mac: "https://brave.com/es/download/",
+                    linux: "https://brave.com/es/download/",
+                    linuxCode: "sudo apt install apt-transport-https curl\nsudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg\necho \"deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main\" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list\nsudo apt update\nsudo apt install brave-browser"
+                }
+            },
+            {
+                id: 7,
+                name: "OBS Studio",
+                category: "streaming",
+                description: "Software libre y de código abierto para grabación y transmisión de video.",
+                icon: "fas fa-video",
+                downloads: {
+                    windows: "https://cdn-fastly.obsproject.com/downloads/OBS-Studio-32.0.2-Windows-x64-Installer.exe",
+                    mac: "https://cdn-fastly.obsproject.com/downloads/obs-studio-32.0.2-macos-apple.dmg",
+                    linux: "https://obsproject.com/download#linux",
+                    linuxCode: "sudo apt install ffmpeg\nsudo add-apt-repository ppa:obsproject/obs-studio\nsudo apt update\nsudo apt install obs-studio"
+                }
+            },
+            {
+                id: 8,
+                name: "Visual Studio Code",
+                category: "desarrollo",
+                description: "Editor de código fuente con soporte para debugging y extensiones.",
+                icon: "fas fa-code",
+                downloads: {
+                    windows: "https://code.visualstudio.com/Download",
+                    mac: "https://code.visualstudio.com/Download",
+                    linux: "https://code.visualstudio.com/Download",
+                    linuxCode: "sudo snap install --classic code\n# O para Debian/Ubuntu:\n# wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg\n# sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/\n# sudo sh -c 'echo \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list'\n# sudo apt update && sudo apt install code"
+                }
+            },
+            {
+                id: 9,
+                name: "Blockbench",
+                category: "modelado",
+                description: "Editor de modelos 3D de caja para Minecraft y otros juegos.",
+                icon: "fas fa-cube",
+                downloads: {
+                    windows: "https://github.com/JannisX11/blockbench/releases/download/v5.0.4/Blockbench_x64_5.0.4.exe",
+                    mac: "https://github.com/JannisX11/blockbench/releases/download/v5.0.4/Blockbench_arm64_5.0.4.dmg",
+                    linux: "https://github.com/JannisX11/blockbench/releases/download/v5.0.4/Blockbench_5.0.4.deb",
+                    linuxCode: "wget https://github.com/JannisX11/blockbench/releases/download/v5.0.4/Blockbench_5.0.4.deb\nsudo dpkg -i Blockbench_5.0.4.deb"
+                }
+            },
+            {
+                id: 10,
+                name: "CurseForge",
+                category: "juegos",
+                description: "Plataforma para mods, addons y packs de modificación para juegos.",
+                icon: "fas fa-tools",
+                downloads: {
+                    windows: "https://download.overwolf.com/install/Download?ExtensionId=cfiahnpaolfnlgaihhmobmnjdafknjnjdpdabpcm&utm_term=eyJkb21haW4iOiJjZi13ZWIifQ%3D%3D",
+                    mac: "https://curseforge.overwolf.com/downloads/curseforge-latest.dmg",
+                    linux: "https://curseforge.overwolf.com/downloads/curseforge-latest-linux.deb",
+                    linuxCode: "wget https://curseforge.overwolf.com/downloads/curseforge-latest-linux.deb\nsudo dpkg -i curseforge-latest-linux.deb"
+                }
+            },
+            {
+                id: 11,
+                name: "Medal",
+                category: "streaming",
+                description: "Software de captura y grabación de clips de juegos con un solo clic.",
+                icon: "fas fa-gamepad",
+                downloads: {
+                    windows: "https://medal.tv/download",
+                    mac: "https://apps.apple.com/us/app/medal-game-clipping/id1518008441",
+                    linux: "# NO DISPONIBLE PARA LINUX",
+                    linuxCode: "# Medal actualmente no tiene soporte nativo para Linux\n# Puedes usar OBS Studio como alternativa"
+                }
+            },
+            {
+                id: 12,
+                name: "Drivers Lenovo",
+                category: "drivers",
+                description: "Controladores y software de soporte para dispositivos Lenovo.",
+                icon: "fas fa-laptop",
+                downloads: {
+                    windows: "https://support.lenovo.com/drivers",
+                    mac: "https://support.lenovo.com/drivers",
+                    linux: "# Los drivers vienen con el kernel de Linux",
+                    linuxCode: "# Los drivers para Lenovo vienen incluidos en el kernel de Linux\n# Para actualizaciones específicas, consulta el sitio oficial de Lenovo"
+                }
+            },
+            {
+                id: 13,
+                name: "Drivers HP",
+                category: "drivers",
+                description: "Controladores y software de soporte para dispositivos HP.",
+                icon: "fas fa-desktop",
+                downloads: {
+                    windows: "https://support.hp.com/drivers",
+                    mac: "https://support.hp.com/drivers",
+                    linux: "# Los drivers vienen con el kernel de Linux",
+                    linuxCode: "# Para impresoras HP:\n# sudo apt install hplip hplip-gui\n# Para otros dispositivos, los drivers vienen con el kernel"
+                }
+            },
+            {
+                id: 14,
+                name: "Drivers Intel",
+                category: "drivers",
+                description: "Controladores y software para productos Intel.",
+                icon: "fas fa-microchip",
+                downloads: {
+                    windows: "https://www.intel.com/content/www/us/en/download-center/home.html",
+                    mac: "https://www.intel.com/content/www/us/en/download-center/home.html",
+                    linux: "# Los drivers Intel están incluidos en el kernel",
+                    linuxCode: "# Los drivers Intel vienen incluidos en el kernel de Linux\n# Para microcódigo actualizado:\n# sudo apt install intel-microcode"
+                }
+            },
+            {
+                id: 15,
+                name: "Drivers AMD",
+                category: "drivers",
+                description: "Controladores y software para productos AMD.",
+                icon: "fas fa-microchip",
+                downloads: {
+                    windows: "https://www.amd.com/support",
+                    mac: "https://www.amd.com/support",
+                    linux: "# Los drivers AMD están incluidos en el kernel",
+                    linuxCode: "# Para tarjetas gráficas AMD:\n# sudo apt install mesa-utils mesa-vulkan-drivers\n# Para procesadores:\n# sudo apt install amd64-microcode"
+                }
+            },
+            {
+                id: 16,
+                name: "Java",
+                category: "desarrollo",
+                description: "Plataforma de programación que permite ejecutar aplicaciones Java.",
+                icon: "fab fa-java",
+                downloads: {
+                    windows: "https://www.java.com/download/",
+                    mac: "https://www.java.com/download/",
+                    linux: "https://www.java.com/download/",
+                    linuxCode: "sudo apt install default-jre\n# Para desarrollo:\n# sudo apt install default-jdk\n# O para Java 17 específicamente:\n# sudo apt install openjdk-17-jdk"
+                }
+            }
+        ];
+
+        // Variables globales
+        const programsContainer = document.getElementById('programs-container');
+        const quickButtonsContainer = document.getElementById('quick-buttons');
+        const searchBox = document.getElementById('search-box');
+        const downloadModal = document.getElementById('downloadModal');
+        const closeModal = document.getElementById('closeModal');
+        const osSelect = document.getElementById('os-select');
+        const startDownloadBtn = document.getElementById('startDownload');
+        const selectedProgramName = document.getElementById('selected-program-name');
+        const installCodeContainer = document.getElementById('installCodeContainer');
+        const installCodeElement = document.getElementById('installCode');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+        
+        let currentProgramId = null;
+        let activeFilter = "todos";
+        
+        // Función para normalizar texto
+        function normalizeText(text) {
+            return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+        
+        // Crear botones de selección rápida
+        function createQuickButtons() {
+            const categories = [
+                { id: "todos", name: "Todos", icon: "fas fa-th" },
+                { id: "juegos", name: "Juegos", icon: "fas fa-gamepad" },
+                { id: "comunicacion", name: "Comunicación", icon: "fas fa-comments" },
+                { id: "musica", name: "Música", icon: "fas fa-music" },
+                { id: "navegadores", name: "Navegadores", icon: "fas fa-globe" },
+                { id: "streaming", name: "Streaming", icon: "fas fa-video" },
+                { id: "desarrollo", name: "Desarrollo", icon: "fas fa-code" },
+                { id: "modelado", name: "Modelado", icon: "fas fa-cube" },
+                { id: "drivers", name: "Drivers", icon: "fas fa-cogs" }
+            ];
+            
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.dataset.category = category.id;
+                if (category.id === "todos") {
+                    button.classList.add('active');
+                }
+                
+                button.innerHTML = `<i class="${category.icon}"></i> ${category.name}`;
+                
+                button.addEventListener('click', () => {
+                    // Quitar clase active de todos los botones
+                    document.querySelectorAll('.quick-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Agregar clase active al botón clickeado
+                    button.classList.add('active');
+                    
+                    // Filtrar programas
+                    activeFilter = category.id;
+                    filterProgramsByCategory();
+                });
+                
+                quickButtonsContainer.appendChild(button);
+            });
+        }
+        
+        // Filtrar programas por categoría
+        function filterProgramsByCategory() {
+            let filtered;
+            
+            if (activeFilter === "todos") {
+                filtered = programs;
+            } else {
+                filtered = programs.filter(program => program.category === activeFilter);
+            }
+            
+            // Aplicar también búsqueda si hay texto
+            const searchTerm = normalizeText(searchBox.value);
+            if (searchTerm.length > 0) {
+                filtered = filtered.filter(program => {
+                    const programName = normalizeText(program.name);
+                    const programDescription = normalizeText(program.description);
+                    return programName.includes(searchTerm) || programDescription.includes(searchTerm);
+                });
+            }
+            
+            renderPrograms(filtered);
+        }
+        
+        // Renderizar programas
+        function renderPrograms(filteredPrograms = programs) {
+            programsContainer.innerHTML = '';
+            
+            if (filteredPrograms.length === 0) {
+                programsContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: rgba(0,0,0,0.4); border-radius: 15px; backdrop-filter: blur(10px);">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #4cc9f0; margin-bottom: 20px;"></i>
+                        <h3 style="color: rgba(255,255,255,0.9);">No se encontraron programas</h3>
+                        <p style="color: rgba(255,255,255,0.7);">Intenta con otro término de búsqueda o cambia la categoría</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredPrograms.forEach(program => {
+                const programCard = document.createElement('div');
+                programCard.className = 'program-card';
+                
+                programCard.innerHTML = `
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="${program.icon}"></i>
+                        </div>
+                        <h3 class="program-name">${program.name}</h3>
+                    </div>
+                    <p class="program-description">${program.description}</p>
+                    <div class="platform-links">
+                        <div class="platform-link">
+                            <i class="fab fa-windows platform-icon windows"></i>
+                            <div>Windows</div>
+                        </div>
+                        <div class="platform-link">
+                            <i class="fab fa-apple platform-icon mac"></i>
+                            <div>macOS</div>
+                        </div>
+                        <div class="platform-link">
+                            <i class="fab fa-linux platform-icon linux"></i>
+                            <div>Linux</div>
+                        </div>
+                    </div>
+                    <div class="download-btn-container">
+                        <button class="download-btn" data-program-id="${program.id}">
+                            <i class="fas fa-download"></i> Descargar
+                        </button>
+                    </div>
+                `;
+                
+                programsContainer.appendChild(programCard);
+            });
+            
+            // Agregar event listeners a los botones de descarga individual
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentProgramId = this.dataset.programId;
+                    openDownloadModal();
+                });
+            });
+        }
+        
+        // Abrir modal de descarga individual
+        function openDownloadModal() {
+            const program = programs.find(p => p.id == currentProgramId);
+            
+            if (!program) {
+                alert('Programa no encontrado');
+                return;
+            }
+            
+            // Mostrar nombre del programa seleccionado
+            selectedProgramName.textContent = program.name;
+            
+            // Actualizar visibilidad del código de instalación
+            const selectedOS = osSelect.value;
+            updateInstallCodeVisibility(selectedOS);
+            
+            downloadModal.style.display = 'flex';
+        }
+        
+        // Cerrar modal
+        function closeDownloadModal() {
+            downloadModal.style.display = 'none';
+        }
+        
+        // Actualizar visibilidad del código de instalación
+        function updateInstallCodeVisibility(osValue) {
+            const program = programs.find(p => p.id == currentProgramId);
+            
+            if (osValue === 'linux-deb' && program && program.downloads.linuxCode) {
+                installCodeContainer.style.display = 'block';
+                installCodeElement.textContent = program.downloads.linuxCode;
+            } else {
+                installCodeContainer.style.display = 'none';
+            }
+        }
+        
+        // Iniciar descarga individual
+        function startDownload() {
+            const program = programs.find(p => p.id == currentProgramId);
+            const selectedOS = osSelect.value;
+            
+            if (!program) {
+                alert('Programa no encontrado');
+                return;
+            }
+            
+            let downloadUrl = program.downloads.windows;
+            let message = `Iniciando descarga de ${program.name} para ${osSelect.options[osSelect.selectedIndex].text}.`;
+            
+            if (selectedOS === 'mac') {
+                downloadUrl = program.downloads.mac;
+            } else if (selectedOS === 'linux-deb') {
+                downloadUrl = program.downloads.linux;
+            }
+            
+            alert(message);
+            // En una implementación real:
+            window.open(downloadUrl, '_blank');
+            
+            closeDownloadModal();
+        }
+        
+        // Buscar programas
+        function searchPrograms() {
+            filterProgramsByCategory();
+        }
+        
+        // Inicializar
+        function init() {
+            createQuickButtons();
+            renderPrograms();
+            
+            // Event listeners
+            searchBox.addEventListener('input', searchPrograms);
+            closeModal.addEventListener('click', closeDownloadModal);
+            startDownloadBtn.addEventListener('click', startDownload);
+            osSelect.addEventListener('change', function() {
+                updateInstallCodeVisibility(this.value);
+            });
+            
+            // Copiar código
+            copyCodeBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(installCodeElement.textContent);
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> Copiado';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            downloadModal.addEventListener('click', function(e) {
+                if (e.target === downloadModal) closeDownloadModal();
+            });
+        }
+        
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
