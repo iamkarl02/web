@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Navegación Minecraft</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/footer/footer.css">
+    <style>
+        /* ESTILOS PARA EL VISUALIZADOR DE PROYECTOS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f8fafc;
+        }
+        
+        .projects-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .project-slide {
+            display: none;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            min-height: 500px;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+        
+        .project-slide.active {
+            display: flex;
+            animation: fadeIn 0.7s ease;
+        }
+        
+        .project-slide.fade-out {
+            opacity: 0;
+        }
+        
+        .project-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .project-header {
+            margin-bottom: 30px;
+        }
+        
+        .project-number {
+            font-size: 14px;
+            color: #64b5f6;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .project-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #64b5f6, #4db6ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .tech-tag {
+            background: rgba(100, 181, 246, 0.15);
+            color: #64b5f6;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+        
+        .project-visit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, #00c853, #64dd17);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 200, 83, 0.3);
+            width: fit-content;
+        }
+        
+        .project-visit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
+        }
+        
+        .project-image-container {
+            flex: 1.3;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-slide:hover .project-image {
+            transform: scale(1.03);
+        }
+        
+        .project-navigation {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(100, 181, 246, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .project-counter {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 1rem;
+            color: #94a3b8;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* ANIMACIONES */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .project-slide {
+                flex-direction: column;
+                min-height: auto;
+            }
+            
+            .project-content {
+                padding: 30px;
+            }
+            
+            .project-image-container {
+                height: 300px;
+                order: -1;
+            }
+            
+            .project-title {
+                font-size: 2.2rem;
+            }
+            
+            .project-visit-btn {
+                align-self: center;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .project-navigation {
+                bottom: 20px;
+            }
+            
+            .project-counter {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .project-content {
+                padding: 25px;
+            }
+            
+            .project-title {
+                font-size: 1.8rem;
+            }
+            
+            .project-description {
+                font-size: 1rem;
+            }
+            
+            .nav-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .projects-container {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .project-slide {
+                flex-direction: row;
+                min-height: 400px;
+            }
+            
+            .project-image-container {
+                height: auto;
+                order: 2;
+            }
+            
+            .project-visit-btn {
+                align-self: flex-start;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación (TU CÓDIGO EXACTO) -->
+    <nav class="mc-navbar">
+        <!-- Botón menú móvil -->
+        <button class="mc-mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Logo -->
+        <img src="../../img/logo/logo.png" alt="Logo" class="mc-logo">
+
+        <!-- Menú para escritorio -->
+        <ul class="mc-nav-menu">
+            <li><a href="#">Minecraft</a></li>
+            <li><a href="#">Colaboradores</a></li>
+            <li><a href="#">Estadísticas</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+
+        <!-- Sección de redes sociales e idioma -->
+        <div class="mc-nav-right">
+            <div class="mc-social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-language-selector">
+                <div class="mc-language-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div class="mc-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mc-navbar-spacer"></div>
+    
+    <!-- Menú móvil -->
+    <div class="mc-mobile-menu">
+        <ul class="mc-mobile-nav-menu">
+            <li><a href="#">Minecraft</a></li>
+            <li><a href="#">Colaboradores</a></li>
+            <li><a href="#">Estadísticas</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+        
+        <!-- Redes e idioma HORIZONTAL a la IZQUIERDA debajo de Contacto -->
+        <div class="mc-mobile-icons-container">
+            <div class="mc-mobile-social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="mc-mobile-language-bottom">
+                <i class="fas fa-globe-americas"></i>
+                <div class="mc-mobile-language-options">
+                    <a href="#">Español</a>
+                    <a href="#">English</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISUALIZADOR DE PROYECTOS (NUEVO) -->
+    <div class="projects-container">
+        <!-- Proyecto 1 -->
+        <div class="project-slide active" id="project-1">
+            <div class="project-content">
+                <div>
+                    <div class="project-header">
+                        <div class="project-number">Proyecto 01</div>
+                        <h1 class="project-title">E-commerce Gaming</h1>
+                    </div>
+                    
+                    <p class="project-description">
+                        Plataforma de comercio electrónico especializada en productos gaming. 
+                        Incluye sistema de carrito de compras, pasarela de pagos integrada, 
+                        seguimiento de pedidos en tiempo real y panel de administración avanzado.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Stripe API</span>
+                    </div>
+                </div>
+                
+                <a href="https://ejemplo.com/proyecto1" class="project-visit-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Visitar Proyecto
+                </a>
+            </div>
+            
+            <div class="project-image-container">
+                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                     alt="E-commerce Gaming" class="project-image">
+            </div>
+        </div>
+        
+        <!-- Proyecto 2 -->
+        <div class="project-slide" id="project-2">
+            <div class="project-content">
+                <div>
+                    <div class="project-header">
+                        <div class="project-number">Proyecto 02</div>
+                        <h1 class="project-title">Dashboard Analytics</h1>
+                    </div>
+                    
+                    <p class="project-description">
+                        Panel de control empresarial con visualización de datos en tiempo real.
+                        Gráficos interactivos, reportes automatizados y sistema de alertas inteligentes.
+                        Optimizado para grandes volúmenes de datos con actualización en tiempo real.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Chart.js</span>
+                    </div>
+                </div>
+                
+                <a href="https://ejemplo.com/proyecto2" class="project-visit-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Visitar Proyecto
+                </a>
+            </div>
+            
+            <div class="project-image-container">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                     alt="Dashboard Analytics" class="project-image">
+            </div>
+        </div>
+        
+        <!-- Proyecto 3 -->
+        <div class="project-slide" id="project-3">
+            <div class="project-content">
+                <div>
+                    <div class="project-header">
+                        <div class="project-number">Proyecto 03</div>
+                        <h1 class="project-title">Red Social Devs</h1>
+                    </div>
+                    
+                    <p class="project-description">
+                        Red social para desarrolladores con sistema de colaboración en proyectos,
+                        compartición de código, foros técnicos y sistema de reputación basado en
+                        contribuciones. Incluye editor de código en tiempo real.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Socket.io</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Express.js</span>
+                    </div>
+                </div>
+                
+                <a href="https://ejemplo.com/proyecto3" class="project-visit-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Visitar Proyecto
+                </a>
+            </div>
+            
+            <div class="project-image-container">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                     alt="Red Social Devs" class="project-image">
+            </div>
+        </div>
+        
+        <!-- Proyecto 4 -->
+        <div class="project-slide" id="project-4">
+            <div class="project-content">
+                <div>
+                    <div class="project-header">
+                        <div class="project-number">Proyecto 04</div>
+                        <h1 class="project-title">App Delivery Gaming</h1>
+                    </div>
+                    
+                    <p class="project-description">
+                        Aplicación móvil de delivery especializada en productos gaming y electrónica.
+                        Sistema de geolocalización, seguimiento de repartidores en tiempo real,
+                        pagos integrados y sistema de valoraciones de productos y vendedores.
+                    </p>
+                    
+                    <div class="project-tech">
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Google Maps API</span>
+                    </div>
+                </div>
+                
+                <a href="https://ejemplo.com/proyecto4" class="project-visit-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Visitar Proyecto
+                </a>
+            </div>
+            
+            <div class="project-image-container">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                     alt="App Delivery Gaming" class="project-image">
+            </div>
+        </div>
+        
+        <!-- Navegación -->
+        <div class="project-navigation">
+            <button class="nav-btn prev-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn next-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="project-counter">
+            <span id="current-project">1</span> / <span id="total-projects">4</span>
+        </div>
+    </div>
+
+    <script src="../../assets/footer/footer.js"></script>
+    <script src="../../assets/background/background.js"></script>
+    
+    <script>
+        // Script para la navegación de proyectos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables
+            const slides = document.querySelectorAll('.project-slide');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const currentProjectSpan = document.getElementById('current-project');
+            const totalProjectsSpan = document.getElementById('total-projects');
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            // Establecer número total de proyectos
+            totalProjectsSpan.textContent = totalSlides;
+            
+            // Función para mostrar slide
+            function showSlide(index) {
+                // Validar índice
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                
+                // Efecto de desvanecimiento
+                slides[currentSlide].classList.add('fade-out');
+                
+                setTimeout(() => {
+                    // Ocultar slide actual
+                    slides[currentSlide].classList.remove('active');
+                    slides[currentSlide].classList.remove('fade-out');
+                    
+                    // Mostrar nuevo slide
+                    currentSlide = index;
+                    slides[currentSlide].classList.add('active');
+                    
+                    // Actualizar contador
+                    currentProjectSpan.textContent = currentSlide + 1;
+                }, 300);
+            }
+            
+            // Event listeners para botones
+            prevBtn.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    showSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight') {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            // Swipe para móviles
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            document.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Swipe izquierda - siguiente proyecto
+                        showSlide(currentSlide + 1);
+                    } else {
+                        // Swipe derecha - proyecto anterior
+                        showSlide(currentSlide - 1);
+                    }
+                }
+            }
+            
+            // Script para el menú móvil (si está en tu footer.js)
+            const mobileMenuBtn = document.querySelector('.mc-mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mc-mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Cerrar menú al hacer clic en un enlace
+                document.querySelectorAll('.mc-mobile-nav-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.style.display = 'none';
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

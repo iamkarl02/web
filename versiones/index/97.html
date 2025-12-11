@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Proyectos - Carrusel Infinito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: #0a0a14;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6, #c084fc, #a855f7, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 25px rgba(139, 92, 246, 0.4);
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            border-radius: 10px;
+            animation: liquidFlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes liquidFlow {
+            0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .carousel-track {
+            display: flex;
+            gap: 30px;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 15px 0;
+        }
+        
+        .project-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.6), rgba(22, 33, 62, 0.4));
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            flex: 0 0 320px;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            cursor: grab;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: relative;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.15), rgba(192, 132, 252, 0.1));
+            border-radius: 20px;
+            z-index: -1;
+        }
+        
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(192, 132, 252, 0.3), rgba(139, 92, 246, 0.4));
+            border-radius: 22px;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .project-card:hover::after {
+            opacity: 1;
+        }
+        
+        .project-card:active {
+            cursor: grabbing;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.25);
+            border-color: rgba(139, 92, 246, 0.7);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.4);
+            position: relative;
+        }
+        
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), transparent);
+            pointer-events: none;
+        }
+        
+        .project-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .project-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), transparent);
+            border-radius: 0 0 20px 20px;
+            pointer-events: none;
+        }
+        
+        .project-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #ffffff;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .project-description {
+            color: #b8b8d0;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c084fc;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            backdrop-filter: blur(5px);
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .project-link:hover::before {
+            left: 100%;
+        }
+        
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+        
+        .project-link.outline {
+            background: transparent;
+            border: 2px solid #8b5cf6;
+            color: #8b5cf6;
+        }
+        
+        .project-link.outline:hover {
+            background: rgba(139, 92, 246, 0.15);
+        }
+        
+        /* Efectos de fondo líquido */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-effect {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .effect-1 {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf6;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .effect-2 {
+            width: 500px;
+            height: 500px;
+            background: #c084fc;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+        
+        .effect-3 {
+            width: 300px;
+            height: 300px;
+            background: #7c3aed;
+            top: 50%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        
+        /* Controles del carrusel */
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .nav-btn {
+            background: rgba(139, 92, 246, 0.2);
+            border: 2px solid #8b5cf6;
+            color: #8b5cf6;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: #8b5cf6;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .project-card {
+                flex: 0 0 75vw;
+                height: 380px;
+            }
+            
+            .carousel-track {
+                gap: 20px;
+            }
+            
+            .carousel-controls {
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .project-card {
+                flex: 0 0 80vw;
+                height: 360px;
+            }
+            
+            .project-content {
+                padding: 15px;
+            }
+            
+            .project-links {
+                flex-direction: column;
+            }
+            
+            .carousel-controls {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects">
+        <div class="bg-effect effect-1"></div>
+        <div class="bg-effect effect-2"></div>
+        <div class="bg-effect effect-3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">PROYECTOS</h1>
+        </div>
+        
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Proyecto 1 -->
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="E-commerce" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Plataforma E-commerce</h3>
+                        <p class="project-description">Tienda online moderna con carrito de compras, pasarela de pago y panel de administración para gestión de productos.</p>
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Node.js</span>
+                            <span class="tag">MongoDB</span>
+                            <span class="tag">Stripe</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="project-link outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 2 -->
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="App Móvil" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">PermaTae</h3>
+                        <p class="project-description">Aplicación móvil para seguimiento de ejercicios, rutinas personalizadas y progreso físico con integración de wearables.</p>
+                        <div class="project-tags">
+                            <span class="tag">React Native</span>
+                            <span class="tag">Firebase</span>
+                            <span class="tag">UI/UX</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="project-link outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 3 -->
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Dashboard Analítico</h3>
+                        <p class="project-description">Panel de control con métricas en tiempo real, gráficos interactivos y reportes automatizados para empresas.</p>
+                        <div class="project-tags">
+                            <span class="tag">Vue.js</span>
+                            <span class="tag">D3.js</span>
+                            <span class="tag">API REST</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="project-link outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 4 -->
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Finanzas" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">App de Finanzas</h3>
+                        <p class="project-description">Sistema de gestión financiera personal con presupuestos, seguimiento de gastos e informes detallados.</p>
+                        <div class="project-tags">
+                            <span class="tag">Angular</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">Chart.js</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="project-link outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 5 -->
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Red Social" class="project-image">
+                    <div class="project-content">
+                        <h3 class="project-title">Plataforma Social</h3>
+                        <p class="project-description">Red social con perfiles, publicaciones, mensajería y sistema de notificaciones en tiempo real.</p>
+                        <div class="project-tags">
+                            <span class="tag">MERN Stack</span>
+                            <span class="tag">Socket.io</span>
+                            <span class="tag">Cloudinary</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> Demo
+                            </a>
+                            <a href="#" class="project-link outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="carousel-controls">
+            <div class="nav-btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="nav-btn" id="nextBtn">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const track = document.getElementById('carouselTrack');
+            const cards = document.querySelectorAll('.project-card');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // Clonar tarjetas para efecto infinito
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                track.appendChild(clone);
+            });
+            
+            const allCards = document.querySelectorAll('.project-card');
+            const cardWidth = 320 + 30; // Ancho de tarjeta + gap
+            let currentIndex = 0;
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID;
+            let velocity = 0;
+            let lastTime = 0;
+            
+            // Función para mover al siguiente (infinito hacia adelante)
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % cards.length;
+                currentTranslate = -currentIndex * cardWidth;
+                prevTranslate = currentTranslate;
+                setSliderPosition();
+            }
+            
+            // Función para establecer la posición del slider
+            function setSliderPosition() {
+                track.style.transform = `translateX(${currentTranslate}px)`;
+            }
+            
+            // Función de animación
+            function animation(currentTime) {
+                if (!lastTime) lastTime = currentTime;
+                const deltaTime = currentTime - lastTime;
+                lastTime = currentTime;
+                
+                if (isDragging) {
+                    setSliderPosition();
+                    // Calcular velocidad para efecto de inercia
+                    velocity = (currentTranslate - prevTranslate) / deltaTime;
+                    prevTranslate = currentTranslate;
+                    requestAnimationFrame(animation);
+                } else if (Math.abs(velocity) > 0.01) {
+                    // Aplicar inercia
+                    currentTranslate += velocity * 15;
+                    velocity *= 0.95; // Fricción
+                    setSliderPosition();
+                    requestAnimationFrame(animation);
+                }
+            }
+            
+            // Event listeners para los botones
+            prevBtn.addEventListener('click', () => {
+                // Para el carrusel infinito hacia adelante, el botón anterior no hace nada
+                // O podrías implementar una lógica diferente si prefieres
+            });
+            
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Eventos de arrastre
+            track.addEventListener('mousedown', dragStart);
+            track.addEventListener('touchstart', dragStart);
+            track.addEventListener('mouseup', dragEnd);
+            track.addEventListener('touchend', dragEnd);
+            track.addEventListener('mousemove', drag);
+            track.addEventListener('touchmove', drag);
+            track.addEventListener('mouseleave', dragEnd);
+            
+            function dragStart(e) {
+                if (e.type === 'touchstart') {
+                    startPos = e.touches[0].clientX;
+                } else {
+                    startPos = e.clientX;
+                    e.preventDefault();
+                }
+                
+                isDragging = true;
+                track.style.cursor = 'grabbing';
+                track.style.transition = 'none';
+                velocity = 0;
+                lastTime = 0;
+                
+                animationID = requestAnimationFrame(animation);
+            }
+            
+            function drag(e) {
+                if (!isDragging) return;
+                
+                let currentPosition;
+                if (e.type === 'touchmove') {
+                    currentPosition = e.touches[0].clientX;
+                } else {
+                    currentPosition = e.clientX;
+                }
+                
+                const diff = currentPosition - startPos;
+                currentTranslate = prevTranslate + diff;
+            }
+            
+            function dragEnd() {
+                if (!isDragging) return;
+                
+                isDragging = false;
+                cancelAnimationFrame(animationID);
+                track.style.cursor = 'grab';
+                
+                const movedBy = currentTranslate - prevTranslate;
+                
+                // Si el arrastre fue significativo hacia la izquierda, cambiar al siguiente slide
+                if (movedBy < -50) {
+                    nextSlide();
+                } else {
+                    // Si no fue significativo, volver a la posición original con transición suave
+                    track.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+                    setSliderPosition();
+                    
+                    // Restablecer la transición después de la animación
+                    setTimeout(() => {
+                        track.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+                    }, 500);
+                }
+            }
+            
+            // Scroll con rueda del mouse
+            let isScrolling = false;
+            track.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (isScrolling) return;
+                
+                isScrolling = true;
+                if (e.deltaY > 0) {
+                    nextSlide();
+                }
+                
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 600);
+            });
+            
+            // Auto slide cada 5 segundos
+            setInterval(nextSlide, 5000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloj Mundial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        body.maximized {
+            background: #000000 !important;
+        }
+        
+        body.maximized::before {
+            display: none;
+        }
+        
+        .clock-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .time {
+            font-size: 12vw;
+            font-weight: 900;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+        
+        body.maximized .time {
+            font-size: 18vw;
+            color: #ff7e5f !important;
+        }
+        
+        .date {
+            font-size: 3.5vw;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .country {
+            font-size: 4vw;
+            margin-bottom: 60px;
+            color: #ffd166;
+            font-weight: 600;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: rgba(30, 30, 46, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .country-option {
+            padding: 18px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .country-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .country-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .country-option:hover::before {
+            left: 100%;
+        }
+        
+        .selected-country {
+            background: linear-gradient(135deg, #4dabf7 0%, #3b82f6 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4) !important;
+        }
+        
+        .color-input {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        #colorPicker {
+            width: 70px;
+            height: 70px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+        
+        #hexInput {
+            padding: 18px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+            width: 180px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        #hexInput:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        }
+        
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .modal-title {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .country-count {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .time {
+                font-size: 18vw;
+            }
+            
+            body.maximized .time {
+                font-size: 24vw;
+            }
+            
+            .date {
+                font-size: 5.5vw;
+            }
+            
+            .country {
+                font-size: 6vw;
+                padding: 12px 25px;
+            }
+            
+            button {
+                padding: 16px 25px;
+                font-size: 15px;
+                min-width: 180px;
+            }
+            
+            .countries-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .countries-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .time {
+                font-size: 22vw;
+            }
+            
+            body.maximized .time {
+                font-size: 28vw;
+            }
+            
+            .date {
+                font-size: 7vw;
+            }
+            
+            .country {
+                font-size: 8vw;
+            }
+            
+            .color-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            #hexInput {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="time" id="time">00:00:00</div>
+        <div class="date" id="date">Lunes, 1 de enero de 2023</div>
+        <div class="country" id="country">España</div>
+        
+        <div class="buttons">
+            <button id="maximizeBtn">Maximizar Pantalla</button>
+            <button id="countryBtn">Cambiar País</button>
+            <button id="colorBtn">Cambiar Color</button>
+        </div>
+    </div>
+    
+    <!-- Modal para países -->
+    <div class="modal" id="countryModal">
+        <button class="close" id="closeCountryModal">×</button>
+        <div class="modal-content">
+            <h2 class="modal-title">Seleccionar País</h2>
+            <input type="text" class="search-box" id="countrySearch" placeholder="Buscar país... (Escribe para filtrar)">
+            <div class="countries-grid" id="countriesList">
+                <!-- Lista de países aquí -->
+            </div>
+            <div class="country-count" id="countryCount">194 países disponibles</div>
+        </div>
+    </div>
+    
+    <!-- Modal para color -->
+    <div class="modal" id="colorModal">
+        <button class="close" id="closeColorModal">×</button>
+        <div class="modal-content">
+            <h2 class="modal-title">Seleccionar Color</h2>
+            <div class="color-input">
+                <input type="color" id="colorPicker" value="#ffffff">
+                <input type="text" id="hexInput" placeholder="#FFFFFF o nombre de color" maxlength="20">
+                <button id="applyColor">Aplicar Color</button>
+            </div>
+            <div style="margin-top: 20px; text-align: center; color: rgba(255,255,255,0.7);">
+                <p>Ejemplos: #FF5733, #33FF57, #3357FF, red, blue, orange, etc.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables
+        let selectedCountry = "España";
+        let selectedColor = "#ffffff";
+        let isMaximized = false;
+        let currentCountries = [];
+        
+        // Zonas horarias para todos los países
+        const timezones = {
+            "Afganistán": "Asia/Kabul",
+            "Albania": "Europe/Tirane",
+            "Alemania": "Europe/Berlin",
+            "Andorra": "Europe/Andorra",
+            "Angola": "Africa/Luanda",
+            "Antigua y Barbuda": "America/Antigua",
+            "Arabia Saudita": "Asia/Riyadh",
+            "Argelia": "Africa/Algiers",
+            "Argentina": "America/Argentina/Buenos_Aires",
+            "Armenia": "Asia/Yerevan",
+            "Australia": "Australia/Sydney",
+            "Austria": "Europe/Vienna",
+            "Azerbaiyán": "Asia/Baku",
+            "Bahamas": "America/Nassau",
+            "Bangladés": "Asia/Dhaka",
+            "Barbados": "America/Barbados",
+            "Baréin": "Asia/Bahrain",
+            "Bélgica": "Europe/Brussels",
+            "Belice": "America/Belize",
+            "Benín": "Africa/Porto-Novo",
+            "Bielorrusia": "Europe/Minsk",
+            "Birmania": "Asia/Yangon",
+            "Bolivia": "America/La_Paz",
+            "Bosnia y Herzegovina": "Europe/Sarajevo",
+            "Botsuana": "Africa/Gaborone",
+            "Brasil": "America/Sao_Paulo",
+            "Brunéi": "Asia/Brunei",
+            "Bulgaria": "Europe/Sofia",
+            "Burkina Faso": "Africa/Ouagadougou",
+            "Burundi": "Africa/Bujumbura",
+            "Bután": "Asia/Thimphu",
+            "Cabo Verde": "Atlantic/Cape_Verde",
+            "Camboya": "Asia/Phnom_Penh",
+            "Camerún": "Africa/Douala",
+            "Canadá": "America/Toronto",
+            "Catar": "Asia/Qatar",
+            "Chad": "Africa/Ndjamena",
+            "Chia": "America/Santiago",
+            "China": "Asia/Shanghai",
+            "Chipre": "Asia/Nicosia",
+            "Ciudad del Vaticano": "Europe/Vatican",
+            "Colombia": "America/Bogota",
+            "Comoras": "Indian/Comoro",
+            "Corea del Norte": "Asia/Pyongyang",
+            "Corea del Sur": "Asia/Seoul",
+            "Costa de Marfil": "Africa/Abidjan",
+            "Costa Rica": "America/Costa_Rica",
+            "Croacia": "Europe/Zagreb",
+            "Cuba": "America/Havana",
+            "Dinamarca": "Europe/Copenhagen",
+            "Dominica": "America/Dominica",
+            "Ecuador": "America/Guayaquil",
+            "Egipto": "Africa/Cairo",
+            "El Salvador": "America/El_Salvador",
+            "Emiratos Árabes Unidos": "Asia/Dubai",
+            "Eritrea": "Africa/Asmara",
+            "Eslovaquia": "Europe/Bratislava",
+            "Eslovenia": "Europe/Ljubljana",
+            "España": "Europe/Madrid",
+            "Estados Unidos": "America/New_York",
+            "Estonia": "Europe/Tallinn",
+            "Etiopía": "Africa/Addis_Ababa",
+            "Filipinas": "Asia/Manila",
+            "Finlandia": "Europe/Helsinki",
+            "Fiyi": "Pacific/Fiji",
+            "Francia": "Europe/Paris",
+            "Gabón": "Africa/Libreville",
+            "Gambia": "Africa/Banjul",
+            "Georgia": "Asia/Tbilisi",
+            "Ghana": "Africa/Accra",
+            "Granada": "America/Grenada",
+            "Grecia": "Europe/Athens",
+            "Guatemala": "America/Guatemala",
+            "Guyana": "America/Guyana",
+            "Guinea": "Africa/Conakry",
+            "Guinea ecuatorial": "Africa/Malabo",
+            "Guinea-Bisáu": "Africa/Bissau",
+            "Haití": "America/Port-au-Prince",
+            "Honduras": "America/Tegucigalpa",
+            "Hungría": "Europe/Budapest",
+            "India": "Asia/Kolkata",
+            "Indonesia": "Asia/Jakarta",
+            "Irak": "Asia/Baghdad",
+            "Irán": "Asia/Tehran",
+            "Irlanda": "Europe/Dublin",
+            "Islandia": "Atlantic/Reykjavik",
+            "Islas Marshall": "Pacific/Majuro",
+            "Islas Salomón": "Pacific/Guadalcanal",
+            "Israel": "Asia/Jerusalem",
+            "Italia": "Europe/Rome",
+            "Jamaica": "America/Jamaica",
+            "Japón": "Asia/Tokyo",
+            "Jordania": "Asia/Amman",
+            "Kazajistán": "Asia/Almaty",
+            "Kenia": "Africa/Nairobi",
+            "Kirguistán": "Asia/Bishkek",
+            "Kiribati": "Pacific/Tarawa",
+            "Kuwait": "Asia/Kuwait",
+            "Laos": "Asia/Vientiane",
+            "Lesoto": "Africa/Maseru",
+            "Letonia": "Europe/Riga",
+            "Líbano": "Asia/Beirut",
+            "Liberia": "Africa/Monrovia",
+            "Libia": "Africa/Tripoli",
+            "Liechtenstein": "Europe/Vaduz",
+            "Lituania": "Europe/Vilnius",
+            "Luxemburgo": "Europe/Luxembourg",
+            "Madagascar": "Indian/Antananarivo",
+            "Malasia": "Asia/Kuala_Lumpur",
+            "Malaui": "Africa/Blantyre",
+            "Maldivas": "Indian/Maldives",
+            "Malí": "Africa/Bamako",
+            "Malta": "Europe/Malta",
+            "Marruecos": "Africa/Casablanca",
+            "Mauricio": "Indian/Mauritius",
+            "Mauritania": "Africa/Nouakchott",
+            "México": "America/Mexico_City",
+            "Micronesia": "Pacific/Chuuk",
+            "Moldavia": "Europe/Chisinau",
+            "Mónaco": "Europe/Monaco",
+            "Mongolia": "Asia/Ulaanbaatar",
+            "Montenegro": "Europe/Podgorica",
+            "Mozambique": "Africa/Maputo",
+            "Namibia": "Africa/Windhoek",
+            "Nauru": "Pacific/Nauru",
+            "Nepal": "Asia/Kathmandu",
+            "Nicaragua": "America/Managua",
+            "Níger": "Africa/Niamey",
+            "Nigeria": "Africa/Lagos",
+            "Noruega": "Europe/Oslo",
+            "Nueva Zelanda": "Pacific/Auckland",
+            "Omán": "Asia/Muscat",
+            "Países Bajos": "Europe/Amsterdam",
+            "Pakistán": "Asia/Karachi",
+            "Palaos": "Pacific/Palau",
+            "Panamá": "America/Panama",
+            "Papúa Nueva Guinea": "Pacific/Port_Moresby",
+            "Paraguay": "America/Asuncion",
+            "Perú": "America/Lima",
+            "Polonia": "Europe/Warsaw",
+            "Portugal": "Europe/Lisbon",
+            "Reino Unido": "Europe/London",
+            "República Centroafricana": "Africa/Bangui",
+            "República Checa": "Europe/Prague",
+            "República de Macedonia": "Europe/Skopje",
+            "República del Congo": "Africa/Brazzaville",
+            "República Democrática del Congo": "Africa/Kinshasa",
+            "República Dominicana": "America/Santo_Domingo",
+            "República Sudafricana": "Africa/Johannesburg",
+            "Ruanda": "Africa/Kigali",
+            "Rumanía": "Europe/Bucharest",
+            "Rusia": "Europe/Moscow",
+            "Samoa": "Pacific/Apia",
+            "San Cristóbal y Nieves": "America/St_Kitts",
+            "San Marino": "Europe/San_Marino",
+            "San Vicente y las Granadinas": "America/St_Vincent",
+            "Santa Lucía": "America/St_Lucia",
+            "Santo Tomé y Príncipe": "Africa/Sao_Tome",
+            "Senegal": "Africa/Dakar",
+            "Serbia": "Europe/Belgrade",
+            "Seychelles": "Indian/Mahe",
+            "Sierra Leona": "Africa/Freetown",
+            "Singapur": "Asia/Singapore",
+            "Siria": "Asia/Damascus",
+            "Somalia": "Africa/Mogadishu",
+            "Sri Lanka": "Asia/Colombo",
+            "Suazilandia": "Africa/Mbabane",
+            "Sudán": "Africa/Khartoum",
+            "Sudán del Sur": "Africa/Juba",
+            "Suecia": "Europe/Stockholm",
+            "Suiza": "Europe/Zurich",
+            "Surinam": "America/Paramaribo",
+            "Tailandia": "Asia/Bangkok",
+            "Tanzania": "Africa/Dar_es_Salaam",
+            "Tayikistán": "Asia/Dushanbe",
+            "Timor Oriental": "Asia/Dili",
+            "Togo": "Africa/Lome",
+            "Tonga": "Pacific/Tongatapu",
+            "Trinidad y Tobago": "America/Port_of_Spain",
+            "Túnez": "Africa/Tunis",
+            "Turkmenistán": "Asia/Ashgabat",
+            "Turquía": "Europe/Istanbul",
+            "Tuvalu": "Pacific/Funafuti",
+            "Ucrania": "Europe/Kiev",
+            "Uganda": "Africa/Kampala",
+            "Uruguay": "America/Montevideo",
+            "Uzbekistán": "Asia/Tashkent",
+            "Vanuatu": "Pacific/Efate",
+            "Venezuela": "America/Caracas",
+            "Vietnam": "Asia/Ho_Chi_Minh",
+            "Yemen": "Asia/Aden",
+            "Yibuti": "Africa/Djibouti",
+            "Zambia": "Africa/Lusaka",
+            "Zimbabue": "Africa/Harare"
+        };
+        
+        // Elementos DOM
+        const timeEl = document.getElementById('time');
+        const dateEl = document.getElementById('date');
+        const countryEl = document.getElementById('country');
+        const countriesList = document.getElementById('countriesList');
+        const countryModal = document.getElementById('countryModal');
+        const colorModal = document.getElementById('colorModal');
+        const colorPicker = document.getElementById('colorPicker');
+        const hexInput = document.getElementById('hexInput');
+        const bodyEl = document.body;
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Botones
+            document.getElementById('maximizeBtn').addEventListener('click', toggleMaximize);
+            document.getElementById('countryBtn').addEventListener('click', () => openModal(countryModal));
+            document.getElementById('colorBtn').addEventListener('click', () => openModal(colorModal));
+            
+            // Cerrar modales
+            document.getElementById('closeCountryModal').addEventListener('click', () => {
+                closeModal(countryModal);
+                clearSearch();
+            });
+            
+            document.getElementById('closeColorModal').addEventListener('click', () => closeModal(colorModal));
+            
+            // Color
+            document.getElementById('applyColor').addEventListener('click', applyColor);
+            colorPicker.addEventListener('input', () => {
+                hexInput.value = colorPicker.value;
+            });
+            
+            hexInput.addEventListener('input', () => {
+                const color = parseColor(hexInput.value);
+                if (color) {
+                    colorPicker.value = color;
+                }
+            });
+            
+            // Buscador de países
+            document.getElementById('countrySearch').addEventListener('input', filterCountries);
+            
+            // Cargar países
+            loadCountries();
+            
+            // Iniciar reloj
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Cerrar modales al hacer clic fuera
+            window.addEventListener('click', (e) => {
+                if (e.target === countryModal) {
+                    closeModal(countryModal);
+                    clearSearch();
+                }
+                if (e.target === colorModal) closeModal(colorModal);
+            });
+            
+            // Detectar cambios en pantalla completa
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+        });
+        
+        // Actualizar reloj
+        function updateClock() {
+            const now = new Date();
+            const tz = timezones[selectedCountry] || "Europe/Madrid";
+            
+            // Hora
+            const timeStr = now.toLocaleTimeString('es-ES', {
+                timeZone: tz,
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // Fecha
+            const dateStr = now.toLocaleDateString('es-ES', {
+                timeZone: tz,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Actualizar
+            timeEl.textContent = timeStr;
+            dateEl.textContent = dateStr;
+            countryEl.textContent = selectedCountry;
+            
+            // Solo aplicar color si no está maximizado
+            if (!isMaximized) {
+                timeEl.style.color = selectedColor;
+            }
+        }
+        
+        // Maximizar pantalla
+        function toggleMaximize() {
+            if (!isMaximized) {
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        // Manejar cambios en pantalla completa
+        function handleFullscreenChange() {
+            const isFullscreen = !!(document.fullscreenElement || 
+                                  document.webkitFullscreenElement || 
+                                  document.mozFullScreenElement || 
+                                  document.msFullscreenElement);
+            
+            if (isFullscreen && !isMaximized) {
+                isMaximized = true;
+                bodyEl.classList.add('maximized');
+                document.getElementById('maximizeBtn').textContent = "Salir de Pantalla Completa";
+                timeEl.style.color = "#ff7e5f";
+            } else if (!isFullscreen && isMaximized) {
+                isMaximized = false;
+                bodyEl.classList.remove('maximized');
+                document.getElementById('maximizeBtn').textContent = "Maximizar Pantalla";
+                timeEl.style.color = selectedColor;
+            }
+        }
+        
+        // Modales
+        function openModal(modal) {
+            modal.style.display = "flex";
+            if (modal === countryModal) {
+                highlightSelectedCountry();
+            }
+        }
+        
+        function closeModal(modal) {
+            modal.style.display = "none";
+        }
+        
+        // Limpiar búsqueda
+        function clearSearch() {
+            const searchBox = document.getElementById('countrySearch');
+            searchBox.value = '';
+            filterCountries();
+        }
+        
+        // Cargar lista de países
+        function loadCountries() {
+            currentCountries = Object.keys(timezones).sort();
+            renderCountries(currentCountries);
+        }
+        
+        // Renderizar países
+        function renderCountries(countries) {
+            countriesList.innerHTML = '';
+            countries.forEach(country => {
+                const div = document.createElement('div');
+                div.className = 'country-option';
+                div.textContent = country;
+                
+                if (country === selectedCountry) {
+                    div.classList.add('selected-country');
+                }
+                
+                div.addEventListener('click', () => {
+                    selectedCountry = country;
+                    updateClock();
+                    closeModal(countryModal);
+                    clearSearch();
+                });
+                
+                countriesList.appendChild(div);
+            });
+            document.getElementById('countryCount').textContent = `${countries.length} países mostrados`;
+        }
+        
+        // Resaltar país seleccionado
+        function highlightSelectedCountry() {
+            document.querySelectorAll('.country-option').forEach(option => {
+                option.classList.remove('selected-country');
+                if (option.textContent === selectedCountry) {
+                    option.classList.add('selected-country');
+                    // Scroll al país seleccionado
+                    option.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            });
+        }
+        
+        // Filtrar países
+        function filterCountries() {
+            const search = document.getElementById('countrySearch').value.toLowerCase();
+            const filtered = currentCountries.filter(country => 
+                country.toLowerCase().includes(search)
+            );
+            renderCountries(filtered);
+        }
+        
+        // Parsear color (hex o nombre)
+        function parseColor(colorStr) {
+            // Si es un nombre de color CSS
+            const ctx = document.createElement('canvas').getContext('2d');
+            ctx.fillStyle = colorStr;
+            const color = ctx.fillStyle;
+            
+            // Si no es válido, intentar como hex
+            if (color === '') {
+                if (colorStr.startsWith('#')) {
+                    if (/^#[0-9A-F]{6}$/i.test(colorStr)) {
+                        return colorStr.toUpperCase();
+                    } else if (/^#[0-9A-F]{3}$/i.test(colorStr)) {
+                        // Expandir formato corto
+                        const short = colorStr.substring(1);
+                        return '#' + short.split('').map(c => c + c).join('').toUpperCase();
+                    }
+                } else if (/^[0-9A-F]{6}$/i.test(colorStr)) {
+                    return '#' + colorStr.toUpperCase();
+                }
+                return null;
+            }
+            return color.toUpperCase();
+        }
+        
+        // Aplicar color
+        function applyColor() {
+            const colorStr = hexInput.value.trim();
+            if (!colorStr) return;
+            
+            const color = parseColor(colorStr);
+            if (color) {
+                selectedColor = color;
+                colorPicker.value = color;
+                hexInput.value = color;
+                updateClock();
+                closeModal(colorModal);
+            } else {
+                alert('Color no válido. Usa formato hexadecimal (#RRGGBB) o nombre de color CSS.');
+            }
+        }
+    </script>
+</body>
+</html>
