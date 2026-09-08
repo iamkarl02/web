@@ -9,7 +9,7 @@
         { name: 'Reloj', icon: '⏰', link: 'reloj.html' },
         { name: 'Fondos de Pantalla', icon: '🖼️', link: 'fondos.html' },
         { name: 'Selector de Colores', icon: '🎨', link: 'selector.html' },
-        { name: 'Generador de variantes', icon: '🎨', link: 'variantes.html' }
+        { name: 'Generador de variantes', icon: '👾', link: 'variantes.html' }
     ];
 
     const toolsGrid = document.getElementById('toolsGrid');
