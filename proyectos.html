@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyectos · Carlos</title>
+    <link rel="stylesheet" href="assets/proyectos/proyectos.css" />
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN (misma que index) -->
+    <header class="navbar">
+        <div class="logo" id="logoStar">
+            <span class="star-logo">✦</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="proyectos.html">Proyectos</a>
+            <a href="redes.html">Redes</a>
+            <span class="nav-separator"></span>
+            <a href="proyectos.html" class="active">Proyectos</a>
+        </nav>
+    </header>
+
+    <!-- CARRUSEL DE PROYECTOS -->
+    <main class="projects-page">
+        <!-- Imagen de fondo del proyecto actual -->
+        <div class="project-background" id="projectBackground"></div>
+
+        <!-- Contenido central: nombre y botón Ir -->
+        <div class="project-content">
+            <h1 class="project-name" id="projectName"></h1>
+            <a href="#" class="btn-ir" id="btnIr">Ir</a>
+        </div>
+
+        <!-- Zonas clicables invisibles (flechas laterales) -->
+        <button class="nav-area left" id="prevBtn" aria-label="Proyecto anterior"></button>
+        <button class="nav-area right" id="nextBtn" aria-label="Proyecto siguiente"></button>
+
+        <!-- Indicadores de puntos -->
+        <div class="dots-container" id="dotsContainer"></div>
+    </main>
+
+    <script src="assets/proyectos/proyectos.js"></script>
+</body>
+</html>

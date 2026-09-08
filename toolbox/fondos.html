@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fondos de pantalla · Carlos</title>
+    <link rel="stylesheet" href="../assets/fondos/fondos.css" />
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header class="navbar">
+        <div class="logo" id="logoStar">
+            <span class="star-logo">✦</span>
+        </div>
+        <nav class="nav-links">
+            <a href="../index.html">Inicio</a>
+            <a href="../proyectos.html">Proyectos</a>
+            <a href="../redes.html">Redes</a>
+            <span class="nav-separator"></span>
+            <a href="fondos.html" class="active">Fondos</a>
+        </nav>
+    </header>
+
+    <!-- CARRUSEL DE FONDOS -->
+    <main class="fondos-page">
+        <!-- Contenedor de fondo (imagen o vídeo) -->
+        <div class="media-container" id="mediaContainer">
+            <!-- Aquí se inserta dinámicamente la imagen o el vídeo -->
+        </div>
+
+        <!-- Contenido central: botón descargar y pantalla completa -->
+        <div class="content-overlay">
+            <a href="#" class="btn-descargar" id="btnDescargar" download>
+                <span>⬇️</span> Descargar
+            </a>
+            <button class="btn-pantalla-completa" id="btnFullscreen" title="Pantalla completa">
+                <span>⛶</span> Pantalla completa
+            </button>
+        </div>
+
+        <!-- Zonas de navegación invisibles -->
+        <button class="nav-area left" id="prevBtn" aria-label="Anterior"></button>
+        <button class="nav-area right" id="nextBtn" aria-label="Siguiente"></button>
+
+        <!-- Indicadores de puntos -->
+        <div class="dots-container" id="dotsContainer"></div>
+    </main>
+
+    <script src="../assets/fondos/fondos.js"></script>
+</body>
+</html>

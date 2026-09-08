@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reloj · ToolBox</title>
+    <link rel="stylesheet" href="../assets/reloj/reloj.css" />
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header class="navbar">
+        <div class="logo" id="logoStar">
+            <span class="star-logo">✦</span>
+        </div>
+        <nav class="nav-links">
+            <a href="../index.html">Inicio</a>
+            <a href="../proyectos.html">Proyectos</a>
+            <a href="../redes.html">Redes</a>
+            <span class="nav-separator"></span>
+            <a href="reloj.html" class="active">Reloj</a>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="reloj-page">
+        <div class="reloj-container">
+            <div class="tiempo" id="tiempo">00:00:00</div>
+            <div class="fecha" id="fechaInfo">Cargando fecha…</div>
+            <div class="zona" id="zonaInfo">Obteniendo ubicación…</div>
+        </div>
+
+        <div class="controles">
+            <button id="btnPantallaCompleta" title="Pantalla completa">
+                <span>⛶</span> Pantalla completa
+            </button>
+        </div>
+    </main>
+
+    <script src="../assets/reloj/reloj.js"></script>
+</body>
+</html>

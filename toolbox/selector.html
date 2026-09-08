@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selector de Colores · ToolBox</title>
+    <link rel="stylesheet" href="../assets/selector/selector.css" />
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN (consistente) -->
+    <header class="navbar">
+        <div class="logo" id="logoStar">
+            <span class="star-logo">✦</span>
+        </div>
+        <nav class="nav-links">
+            <a href="../index.html">Inicio</a>
+            <a href="../proyectos.html">Proyectos</a>
+            <a href="../redes.html">Redes</a>
+            <span class="nav-separator"></span>
+            <a href="selector.html" class="active">Colores</a>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="selector-page">
+        <button id="btnElegirColor" class="btn-accion">
+            <span class="icono">🎨</span> Elegir color
+        </button>
+
+        <button id="btnDescargar" class="btn-accion">
+            <span class="icono">⬇️</span> Descargar
+        </button>
+    </main>
+
+    <!-- MODAL PARA ELEGIR COLOR -->
+    <div class="modal-overlay" id="modalColor">
+        <div class="modal modal-color">
+            <button class="modal-cerrar" id="cerrarColor">&times;</button>
+            <h3>Selecciona un color</h3>
+            <input type="color" id="inputColor" value="#ffffff" />
+            <p class="color-hex" id="colorHex">#ffffff</p>
+        </div>
+    </div>
+
+    <!-- MODAL PARA DESCARGA -->
+    <div class="modal-overlay" id="modalDescarga">
+        <div class="modal modal-descarga">
+            <button class="modal-cerrar" id="cerrarDescarga">&times;</button>
+            <h3>Descargar imagen</h3>
+            <p class="subtitulo">Elige las dimensiones:</p>
+
+            <div class="opciones-dimensiones">
+                <button class="opcion-dim" data-dim="vertical">Vertical<br><small>1080×1920</small></button>
+                <button class="opcion-dim activa" data-dim="horizontal">Horizontal<br><small>1920×1080</small></button>
+                <button class="opcion-dim" data-dim="cuadrado">Cuadrado<br><small>1080×1080</small></button>
+                <button class="opcion-dim" data-dim="personalizado">Personalizado</button>
+            </div>
+
+            <div class="personalizado-campos" id="personalizadoCampos">
+                <label>Ancho (px): <input type="number" id="ancho" min="1" value="1920"></label>
+                <label>Alto (px): <input type="number" id="alto" min="1" value="1080"></label>
+            </div>
+
+            <div class="modal-botones">
+                <button id="btnCancelarDescarga" class="btn-cancelar">Cancelar</button>
+                <button id="btnConfirmarDescarga" class="btn-descargar">Descargar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/selector/selector.js"></script>
+</body>
+</html>
