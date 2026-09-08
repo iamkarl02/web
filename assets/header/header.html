@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barra de Navegación · Referencia</title>
+    <style>
+        /* ============================================================
+           BARRA DE NAVEGACIÓN - REFERENCIA OFICIAL
+           (Copiada exactamente del index.html)
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 300;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: #f5f0eb;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* ---- BARRA DE NAVEGACIÓN (transparente, un poco más ligera) ---- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 2.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 252, 248, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            z-index: 1000;
+        }
+
+        .logo {
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .logo .star-logo {
+            font-size: 2.2rem;
+            color: #2c2a28;
+            letter-spacing: 2px;
+            font-weight: 300;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.4rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(40, 38, 36, 0.65);
+            font-weight: 300;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            padding: 0.3rem 0.1rem;
+            position: relative;
+            transition: color 0.25s ease, border-color 0.25s ease;
+            border-bottom: 1.5px solid transparent;
+        }
+
+        .nav-links a.active {
+            color: #1a1816;
+            border-bottom: 1.5px solid #1a1816;
+        }
+
+        .nav-links a:hover {
+            color: #1a1816;
+            border-bottom: 1.5px solid rgba(26, 24, 22, 0.3);
+        }
+
+        .nav-links a.active:hover {
+            border-bottom: 1.5px solid #1a1816;
+        }
+
+        /* Separador opcional (solo si quieres separar Reloj) */
+        .nav-separator {
+            display: inline-block;
+            width: 1px;
+            height: 20px;
+            background-color: rgba(26, 24, 22, 0.2);
+            margin: 0 1.2rem;
+            vertical-align: middle;
+        }
+
+        /* Contenido de ejemplo para que se vea el fondo */
+        .contenido-ejemplo {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f9f6f2 0%, #e8e0d8 50%, #dfd6cc 100%);
+            font-size: 2rem;
+            color: rgba(26, 24, 22, 0.3);
+            letter-spacing: 2px;
+        }
+
+        /* ---- RESPONSIVE (idéntico al index) ---- */
+        @media (max-width: 640px) {
+            .navbar {
+                padding: 0.9rem 1.5rem;
+                flex-wrap: wrap;
+                background: rgba(255, 252, 248, 0.25);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+            .nav-separator {
+                margin: 0 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 1.2rem;
+                background: rgba(255, 252, 248, 0.25);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+            .nav-links {
+                gap: 0.8rem;
+            }
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+            .nav-separator {
+                margin: 0 0.5rem;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN DE REFERENCIA -->
+    <header class="navbar">
+        <div class="logo" id="logoStar">
+            <span class="star-logo">✦</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html" class="active">Inicio</a>
+            <a href="proyectos.html">Proyectos</a>
+            <a href="redes.html">Redes</a>
+            <span class="nav-separator"></span>
+            <a href="reloj.html">Reloj</a>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO DE EJEMPLO -->
+    <main class="contenido-ejemplo">
+        Contenido de la página
+    </main>
+
+    <script>
+        // ============================================================
+        //  COMPORTAMIENTO DE LA BARRA (logo clicable)
+        // ============================================================
+        (function() {
+            'use strict';
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const logo = document.getElementById('logoStar');
+                if (logo) {
+                    logo.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'index.html';
+                    });
+                }
+                console.log('✨ Barra de navegación lista');
+            });
+        })();
+    </script>
+</body>
+</html>

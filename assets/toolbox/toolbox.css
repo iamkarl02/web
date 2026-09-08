@@ -1,0 +1,224 @@
+/* ============================================================
+   ESTILOS PÁGINA TOOLBOX
+   Barra de navegación idéntica al resto del sitio
+   Botones centrados en pantalla
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+}
+
+html,
+body {
+    height: 100%;
+    background: #f5f0eb;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Estilo base del separador (se aplica en todas las pantallas) */
+.nav-separator {
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background-color: rgba(26, 24, 22, 0.2);
+    margin: 0 1.2rem;
+    vertical-align: middle;
+}
+
+/* Ajuste solo para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .nav-separator {
+        margin: 0 0.5rem;
+        height: 16px;
+    }
+}
+
+/* ---- BARRA DE NAVEGACIÓN (transparente, un poco más ligera) ---- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.2rem 2.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 252, 248, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    z-index: 1000;
+}
+
+.logo {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.logo .star-logo {
+    font-size: 2.2rem;
+    color: #2c2a28;
+    letter-spacing: 2px;
+    font-weight: 300;
+    display: inline-block;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgba(40, 38, 36, 0.65);
+    font-weight: 300;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    padding: 0.3rem 0.1rem;
+    position: relative;
+    transition: color 0.25s ease, border-color 0.25s ease;
+    border-bottom: 1.5px solid transparent;
+}
+
+.nav-links a.active {
+    color: #1a1816;
+    border-bottom: 1.5px solid #1a1816;
+}
+
+.nav-links a:hover {
+    color: #1a1816;
+    border-bottom: 1.5px solid rgba(26, 24, 22, 0.3);
+}
+
+.nav-links a.active:hover {
+    border-bottom: 1.5px solid #1a1816;
+}
+
+/* ---- CONTENIDO TOOLBOX (centrado vertical y horizontal) ---- */
+.toolbox-page {
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* Centra verticalmente */
+    align-items: center;       /* Centra horizontalmente */
+    padding: 5rem 2rem 2rem;   /* Espacio superior para la barra fija */
+    background: linear-gradient(145deg, #f9f6f2 0%, #e8e0d8 50%, #dfd6cc 100%);
+}
+
+/* Cuadrícula flexible centrada */
+.tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;   /* Centra los botones */
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Botón de herramienta */
+.tool-button {
+    flex: 0 1 180px;            /* Ancho base 180px, puede encoger */
+    min-width: 140px;
+    max-width: 180px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(26, 24, 22, 0.1);
+    border-radius: 20px;
+    padding: 2rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #1a1816;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+}
+
+.tool-button:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(26, 24, 22, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.tool-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    color: #2c2a28;
+}
+
+.tool-name {
+    font-weight: 400;
+    font-size: 1.05rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1.8rem;
+    }
+    .tools-grid {
+        gap: 1rem;
+    }
+    .tool-button {
+        flex-basis: 150px;
+        min-width: 120px;
+        padding: 1.5rem 0.8rem;
+    }
+    .tool-icon {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 252, 248, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-links {
+        gap: 0.8rem;
+    }
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+    .toolbox-page {
+        padding: 4.5rem 1rem 1.5rem;
+    }
+    .tools-grid {
+        gap: 0.8rem;
+    }
+    .tool-button {
+        flex-basis: 120px;
+        min-width: 100px;
+        padding: 1rem 0.5rem;
+        border-radius: 16px;
+    }
+    .tool-icon {
+        font-size: 1.8rem;
+    }
+    .tool-name {
+        font-size: 0.9rem;
+    }
+}

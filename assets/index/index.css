@@ -1,0 +1,255 @@
+/* ============================================================
+   ESTILOS PÁGINA HOME (index)
+   Fondo que se adapta al contenido (sin scroll extra)
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+}
+
+html,
+body {
+    height: 100%;
+    background: #f5f0eb;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Estilo base del separador */
+.nav-separator {
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background-color: rgba(26, 24, 22, 0.2);
+    margin: 0 1.2rem;
+    vertical-align: middle;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 480px) {
+    .nav-separator {
+        margin: 0 0.5rem;
+        height: 16px;
+    }
+}
+
+/* ---- BARRA DE NAVEGACIÓN (transparente, un poco más ligera) ---- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.2rem 2.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 252, 248, 0.25);  /* antes 0.4 → ahora más transparente */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    z-index: 1000;
+}
+
+.logo {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.logo .star-logo {
+    font-size: 2.2rem;
+    color: #2c2a28;
+    letter-spacing: 2px;
+    font-weight: 300;
+    display: inline-block;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgba(40, 38, 36, 0.65);
+    font-weight: 300;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    padding: 0.3rem 0.1rem;
+    position: relative;
+    transition: color 0.25s ease, border-color 0.25s ease;
+    border-bottom: 1.5px solid transparent;
+}
+
+.nav-links a.active {
+    color: #1a1816;
+    border-bottom: 1.5px solid #1a1816;
+}
+
+.nav-links a:hover {
+    color: #1a1816;
+    border-bottom: 1.5px solid rgba(26, 24, 22, 0.3);
+}
+
+.nav-links a.active:hover {
+    border-bottom: 1.5px solid #1a1816;
+}
+
+/* ---- PÁGINA HOME (fondo se adapta al contenido) ---- */
+#homePage {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 2rem;
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+    background: linear-gradient(145deg, #f9f6f2 0%, #e8e0d8 50%, #dfd6cc 100%);
+    background-size: 100% 100%;
+    position: relative;
+}
+
+#homePage .hero {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+#homePage .hero h1 {
+    font-size: 5.2rem;
+    font-weight: 200;
+    letter-spacing: 8px;
+    color: #1a1816;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+    margin-bottom: 4rem;
+    line-height: 1.1;
+}
+
+.btn-proyectos {
+    display: inline-block;
+    background: rgba(26, 24, 22, 0.06);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(26, 24, 22, 0.15);
+    padding: 1rem 4.5rem;
+    border-radius: 80px;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    color: #1a1816;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+}
+
+.btn-proyectos:hover {
+    background: rgba(26, 24, 22, 0.1);
+    border-color: rgba(26, 24, 22, 0.3);
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+.credito-home {
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.25);
+    font-weight: 200;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.credito-home:hover {
+    color: rgba(26, 24, 22, 0.5);
+}
+
+/* ---- RESPONSIVE HOME ---- */
+@media (max-width: 640px) {
+    .navbar {
+        padding: 0.9rem 1.5rem;
+        flex-wrap: wrap;
+        background: rgba(255, 252, 248, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-links {
+        gap: 1.2rem;
+    }
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+
+    #homePage {
+        min-height: 100vh;
+        min-height: 100dvh;
+        padding-top: 5.5rem;
+        padding-bottom: 3rem;
+    }
+
+    #homePage .hero h1 {
+        font-size: 3.2rem;
+        letter-spacing: 4px;
+        margin-bottom: 3rem;
+    }
+    .btn-proyectos {
+        padding: 0.8rem 2.8rem;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+    .credito-home {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        font-size: 0.55rem;
+        letter-spacing: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 252, 248, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-links {
+        gap: 0.8rem;
+    }
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+
+    #homePage {
+        padding-top: 5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    #homePage .hero h1 {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 2.5rem;
+    }
+    .btn-proyectos {
+        padding: 0.7rem 2rem;
+        font-size: 1rem;
+    }
+    .credito-home {
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.5rem;
+    }
+}

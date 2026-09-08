@@ -1,0 +1,241 @@
+/* ============================================================
+   ESTILOS PÁGINA RELOJ
+   Barra de navegación idéntica al index (fuente Inter)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Roboto, sans-serif;
+    font-weight: 300;
+}
+
+html,
+body {
+    height: 100%;
+    background: #f7f5f2;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Estilo base del separador */
+.nav-separator {
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background-color: rgba(26, 24, 22, 0.2);
+    margin: 0 1.2rem;
+    vertical-align: middle;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 480px) {
+    .nav-separator {
+        margin: 0 0.5rem;
+        height: 16px;
+    }
+}
+
+/* ---- BARRA DE NAVEGACIÓN (idéntica a index, con fuente Inter) ---- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.2rem 2.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 252, 248, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    z-index: 1000;
+    /* Forzar fuente Inter en la barra */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.logo {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.logo .star-logo {
+    font-size: 2.2rem;
+    color: #2c2a28;
+    letter-spacing: 2px;
+    font-weight: 300;
+    display: inline-block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgba(40, 38, 36, 0.65);
+    font-weight: 300;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    padding: 0.3rem 0.1rem;
+    position: relative;
+    transition: color 0.25s ease, border-color 0.25s ease;
+    border-bottom: 1.5px solid transparent;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.nav-links a.active {
+    color: #1a1816;
+    border-bottom: 1.5px solid #1a1816;
+}
+
+.nav-links a:hover {
+    color: #1a1816;
+    border-bottom: 1.5px solid rgba(26, 24, 22, 0.3);
+}
+
+.nav-links a.active:hover {
+    border-bottom: 1.5px solid #1a1816;
+}
+
+/* ---- CONTENIDO PRINCIPAL DEL RELOJ (mantiene Poppins) ---- */
+.reloj-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 5rem 2rem 2rem;
+    background: linear-gradient(145deg, #f9f6f2 0%, #e8e0d8 50%, #dfd6cc 100%);
+}
+
+.reloj-container {
+    text-align: center;
+    margin-bottom: 3rem;
+    user-select: none;
+}
+
+.tiempo {
+    font-size: clamp(8rem, 28vw, 22rem);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #1a1816;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    line-height: 1;
+    transition: color 0.3s ease;
+    font-variant-numeric: tabular-nums;
+}
+
+.fecha {
+    margin-top: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: rgba(26, 24, 22, 0.7);
+    text-transform: capitalize;
+}
+
+.zona {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: rgba(26, 24, 22, 0.45);
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.controles {
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.controles button {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(26, 24, 22, 0.1);
+    border-radius: 40px;
+    padding: 0.9rem 1.8rem;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    color: #1a1816;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.controles button:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(26, 24, 22, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.controles button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ---- RESPONSIVE (igual que index) ---- */
+@media (max-width: 640px) {
+    .navbar {
+        padding: 0.9rem 1.5rem;
+        flex-wrap: wrap;
+        background: rgba(255, 252, 248, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-links {
+        gap: 1.2rem;
+    }
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+    .controles button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 252, 248, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-links {
+        gap: 0.8rem;
+    }
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+    .tiempo {
+        font-size: 5rem;
+    }
+    .fecha {
+        font-size: 1rem;
+    }
+    .zona {
+        font-size: 0.7rem;
+    }
+    .controles button {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+}
